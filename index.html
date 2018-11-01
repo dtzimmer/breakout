@@ -28,8 +28,8 @@
         var ballRadius = 10;
         var x = canvas.width / 2; // centers the horizontal position in the middle
         var y = canvas.height - 30 // starts the vertical position at 320-30 = 290 ---- 0 at the top
-        var dx = 2;
-        var dy = -2;
+        var dx = 2; //add a small value to x and y after every frame has been drawn to make it appear that the ball is moving. 
+        var dy = -2;// (see line above)
         var paddleHeight = 20;
         var paddleWidth = 75;
         var paddleX = (canvas.width - paddleWidth) / 2;
@@ -213,7 +213,7 @@
             else if (downPressed && paddleY > 0) {
                 paddleY -= 7;
             }
-            x += dx;
+            x += dx;  // update x and y with our dx and dy variable on every frame, so the ball will be painted in the new position on every update.
             y += dy;
             requestAnimationFrame(draw);
         }
