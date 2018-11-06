@@ -25,7 +25,7 @@
     <script>
         var canvas = document.getElementById("myCanvas"); //storing a reference to the <canvas> element to the canvas variable
         var ctx = canvas.getContext("2d"); //created the ctx variable to store the 2D rendering, the tool to paint on the Canvas
-        var ballRadius = 10;
+        var ballRadius = 10; //will hold the radius of the drawn circle and be used for calculation
         var x = canvas.width / 2; // centers the horizontal position in the middle
         var y = canvas.height - 30 // starts the vertical position at 320-30 = 290 ---- 0 at the top
         var dx = 2; //add a small value to x and y after every frame has been drawn to make it appear that the ball is moving. 
@@ -34,7 +34,7 @@
         var paddleWidth = 75;
         var paddleX = (canvas.width - paddleWidth) / 2;
         var paddleY = (canvas.height - paddleHeight) / 2;
-        var rightPressed = false;
+        var rightPressed = false; //The default value for both is false because at the beginning the control buttons are not pressed.
         var leftPressed = false;
         var upPressed = false;
         var downPressed = false;
@@ -62,7 +62,9 @@
         document.addEventListener("keyup", keyUpHandler, false);
         document.addEventListener("mousemove", mouseMoveHandler, false);
 
-
+        //When the keydown event is fired on any of the keys on your keyboard (when they are pressed), 
+        //the keyDownHandler() function will be executed. The same pattern is true for the second listener: 
+        //keyup events will fire the keyUpHandler() function (when the keys stop being pressed).
 
         function keyDownHandler(e) {
             if (e.keyCode == 39) {
@@ -92,6 +94,17 @@
                 downPressed = false;
             }
         }
+
+        //When we press a key down, this information is stored in a variable. 
+        //The relevant variable in each case is set to true. 
+        //When the key is released, the variable is set back to false.
+
+        //Both functions take an event as a parameter, represented by the e variable. 
+        //From that you can get useful information: the keyCode holds the information 
+        //about the key that was pressed. For example key code 37 is the left cursor key and 39 is the right cursor. 
+        //If the left cursor is pressed, then the leftPressed variable is set to true, 
+        //and when it is released the leftPressed variable is set to false. 
+        //The same pattern follows with the right cursor and the rightPressed variable.
 
         function mouseMoveHandler(e) {
             var relativeX = e.clientX - canvas.offsetLeft;
@@ -137,6 +150,11 @@
             ctx.closePath();
         }
 
+        //Here we're defining the height and width of the paddle, 
+        //and its starting point on the x axis, for use in calculations 
+        //further on down the code. Let's create a function that will 
+        //draw the paddle on the screen. 
+
         function drawBricks() {
             for (var c = 0; c < brickColumnCount; c++) {
                 for (var r = 0; r < brickRowCount; r++) {
@@ -167,9 +185,8 @@
             ctx.fillText("Lives: " + lives, canvas.width - 65, 20);
         }
 
-
         function draw() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.clearRect(0, 0, canvas.width, canvas.height); //This method takes four parameters: the x and y coordinates of the top left corner of a rectangle, and the x and y coordinates of the bottom right corner of a rectangle.
             drawBricks();
             drawBall();
             drawPaddle();
@@ -177,11 +194,11 @@
             drawLives();
             collisionDetection();
 
-            if (x + dx > canvas.width - ballRadius || x + dx < ballRadius) {
+            if (x + dx > canvas.width - ballRadius || x + dx < ballRadius) { //bouncing off the left and right walls
                 dx = -dx;
             }
-            if (y + dy < ballRadius) {
-                dy = -dy;
+            if (y + dy < ballRadius) { // If the y value of the ball position is lower than zero, change the direction of the movement on the y axis by setting it equal to itself, reversed. 
+                dy = -dy; // If the ball's y position is greater than the height of the Canvas (remember that we count the y values from the top left, so the top edge starts at 0 and the bottom edge is at 320 pixels, the Canvas' height)
             } else if (y + dy > canvas.height - ballRadius) {
                 if (x > paddleX && x < paddleX + paddleWidth) {
                     dy = -dy;
